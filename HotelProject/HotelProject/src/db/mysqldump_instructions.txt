@@ -1,0 +1,5 @@
+to export ddl
+
+mysqldump -u root -p db_name >> db_backup.sql
+
+
