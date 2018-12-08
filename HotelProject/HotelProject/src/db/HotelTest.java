@@ -6,12 +6,13 @@ import java.util.Scanner;
 public class HotelTest {
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost/singaporeHotels";
-	//static final String DB_URL = "jdbc:mysql://localhost/hotelsys";
+	//static final String DB_URL = "jdbc:mysql://localhost/singaporeHotels";
+	static final String DB_URL = "jdbc:mysql://localhost/hotelsys";
 
 	//  Database credentials
 	static final String USER = "root";
-	static final String PASS = "barney96";
+	//static final String PASS = "barney96";
+	static final String PASS = "10fruits";
 	   
 	public static void main(String[] args) {
 		Connection conn = null;
@@ -21,8 +22,9 @@ public class HotelTest {
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 			ResultSet rs = null;
 			Statement stmt = conn.createStatement();
+			PreparedStatement pStmt = null;
 			
-			boolean admin = false;
+			int admin = 0;
 			
 			System.out.println("Welcome to Nick Young's Hotels");
 			// menu
@@ -31,38 +33,73 @@ public class HotelTest {
 			System.out.println("Enter letter within a pair of brackets to select option");
 			Scanner reader = new Scanner(System.in);
 			String input = reader.nextLine();
+			
+			int loggedInUserID = 999;
+			String firstName = null;
+			String lastName = null;
+			String userEmail = null;
+			String userPassword = null;
 
 			// menu action
 			if (input.equals("C") || input.equals("c")) {
 				//createUser 
-
-			} else if (input.equals("S") || input.equals("s")) {
-				//signInUser
+				System.out.print("First name: ");
+				firstName = reader.nextLine();
+				System.out.print("Last name: ");
+				lastName = reader.nextLine();
 				System.out.print("Email: ");
-				String userEmail = reader.nextLine();
+				userEmail = reader.nextLine();
 				System.out.print("Password: ");
-				String userPassword = reader.nextLine();
+				userPassword = reader.nextLine();
 				
-				String sql = "SELECT first_name, last_name,user_id FROM user WHERE email='"+userEmail+"' and password='"+userPassword+"';";
+				String sql = "INSERT INTO user (first_name, last_name, email, password) VALUES (?,?,?,?)";
+				pStmt= conn.prepareStatement(sql);
+				
+				pStmt.setString(1, firstName);
+				pStmt.setString(2, lastName);
+				pStmt.setString(3, userEmail);
+				pStmt.setString(4, userPassword);
+				pStmt.addBatch();
+				pStmt.executeBatch();
+				
+				sql = "SELECT user_id FROM user WHERE email='"+userEmail+"' and password='"+userPassword+"';";
 				rs = stmt.executeQuery(sql);
-				
-				int loggedInUserID = 999;
-				String first_name = null;
-				String last_name = null;
 				while (rs.next())
 				{ 
 					loggedInUserID = rs.getInt("user_id"); 
-					first_name = rs.getString("first_name");
-					last_name = rs.getString("last_name");
 				}
 				
-				if (loggedInUserID != 999 ) {System.out.println("Sign in Successful! Welcome " + first_name + " " + last_name + "!");}
-				else {System.out.println("Incorrect Credentials."); reader.close(); return; }
 				
-				System.out.println();
-			} 
+				if (loggedInUserID != 999 ) {System.out.println("Create Account Successful! Welcome " + firstName + " " + lastName + "!");}
+				else {System.out.println("Account creation failed"); reader.close(); return; }
+				
+			} else if (input.equals("S") || input.equals("s")) {
+				//signInUser
+				System.out.print("Email: ");
+				userEmail = reader.nextLine();
+				System.out.print("Password: ");
+				userPassword = reader.nextLine();
+				
+				String sql = "SELECT first_name, last_name,user_id FROM user WHERE email='"+userEmail+"' and password='"+userPassword+"';"; 
+				rs = stmt.executeQuery(sql);
+				
+				while (rs.next())
+				{ 
+					loggedInUserID = rs.getInt("user_id"); 
+					firstName = rs.getString("first_name");
+					lastName = rs.getString("last_name");
+				}
+				
+				if (loggedInUserID != 999 ) {System.out.println("Sign in Successful! Welcome " + firstName + " " + lastName + "!");}
+				else {System.out.println("Incorrect Credentials."); reader.close(); return; }
+			}
+			System.out.println();
+			
+			//check if admin account
+			if((userEmail.equals("admin@hotel.com")) && (userPassword.equals("eleanor"))) admin=1; 
 
-			if(admin) {
+			
+			if(admin==1) {
 				System.out.println("Select one of the following options: ");
 				System.out.println("[H]otel management [O]ther [L]og out");
 				System.out.println("Enter letter within a pair of brackets to select option");
