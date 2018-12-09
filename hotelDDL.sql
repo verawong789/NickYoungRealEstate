@@ -101,5 +101,5 @@ INSERT INTO `room` (room_id, room_number, rate, hotel_id, booked) VALUES (1001,4
 UNLOCK TABLES;
 
 LOCK TABLES `HOTEL` WRITE;
-INSERT INTO `HOTEL` VALUES (9001,'Mariott San Jose','201 South 4th Street','San Jose','CA',95112,5),(9002,'Hilton San Jose','487 South 8th Street','San Jose','CA',95112,5),(9003,'Fairmont San Jose','170 S Market Street','San Jose','CA',95112,4);
+INSERT INTO `HOTEL` VALUES (9001,'Mariott San Jose','201 South 4th Street','San Jose','CA',95112,5),(9002,'Hilton San Jose','487 South 8th Street','San Jose','CA',95112,5),(9003,'Fairmont San Jose','170 S Market Street','San Jose','CA',95112,4),(9004,'Hilton New York','123 Broadway Street','New York City','NY',10001,3);
 UNLOCK TABLES;
