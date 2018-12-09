@@ -93,7 +93,7 @@ END//
 Delimiter ;
 
 LOCK TABLES `USER` WRITE;
-INSERT INTO `USER` VALUES (1,'jon','wong','jonwong@email','jonwongpassword'),(2,'Vera','Wong','verawong@email.com','verawongpassword'),(3,'Steven','Louie','stevenlouie@email.com','stevenlouiepassword'),(4,'Rachel','Green','centralperk@email.com','rachellovesgunther'),(5,'Joey','Tribbiani','drakeramoray@dayofourlives.com','iloverachel'),(6,'Chandler','Bing','chanandlerbong@email.com','matthewperry'),(7,'Ross','Geller','fossils@nyu.edu','davidschwimmer'),(8,'Phoebe','Buffay','pbuffay@massage.com','lisakudrow'),(9,'Monica','Geller','mgeller@email.com','ihatesmoking'),(10,'Administrator','Account','admin@hotel.com','eleanor';
+INSERT INTO `USER` VALUES (1,'jon','wong','jonwong@email','jonwongpassword'),(2,'Vera','Wong','verawong@email.com','verawongpassword'),(3,'Steven','Louie','stevenlouie@email.com','stevenlouiepassword'),(4,'Rachel','Green','centralperk@email.com','rachellovesgunther'),(5,'Joey','Tribbiani','drakeramoray@dayofourlives.com','iloverachel'),(6,'Chandler','Bing','chanandlerbong@email.com','matthewperry'),(7,'Ross','Geller','fossils@nyu.edu','davidschwimmer'),(8,'Phoebe','Buffay','pbuffay@massage.com','lisakudrow'),(9,'Monica','Geller','mgeller@email.com','ihatesmoking'),(10,'Administrator','Account','admin@hotel.com','eleanor');
 UNLOCK TABLES;
 
 LOCK TABLES `room` WRITE;
