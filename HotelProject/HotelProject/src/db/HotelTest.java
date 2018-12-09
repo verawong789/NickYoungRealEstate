@@ -301,16 +301,22 @@ public class HotelTest {
 
 						} else if (input.equals("H") || input.equals("h")) {
 							//changeReservation
+							System.out.print("Enter hotel id: ");
+							int hotelId = reader.nextInt();
+							System.out.print("Enter room id: ");
+							int roomId = reader.nextInt();
 							System.out.print("Enter new starting date: ");
 							int start_date = reader.nextInt();
 							System.out.print("Enter new end date: ");
 							int end_date = reader.nextInt();
 							
-							String sql = "UPDATE booking, user SET date_booking_start = ? and date_booking_end = ? WHERE booking.user_id = user.user_id";
+							String sql = "UPDATE booking, user SET date_booking_start = ? and date_booking_end = ? WHERE booking.user_id = user.user_id and hotel_id = ? and room_id = ?";
 							pStmt = conn.prepareStatement(sql);
 							
 							pStmt.setInt(1, start_date);
 							pStmt.setInt(2, end_date);
+							pStmt.setInt(3, hotelId);
+							pStmt.setInt(4, roomId);
 							pStmt.addBatch();
 							pStmt.executeBatch();
 							
