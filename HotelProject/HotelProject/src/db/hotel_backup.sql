@@ -123,6 +123,11 @@ CREATE TABLE `room` (
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
 INSERT INTO `room` VALUES (1001,432,199,9001),(1002,635,119,9001),(1003,639,129,9001),(1004,832,119,9001),(1005,519,99,9001),(1006,645,119,9001),(1014,923,299,9002),(1015,623,199,9002),(1016,532,99,9002),(1017,619,100,9002),(1018,719,149,9002),(1019,723,199,9002),(1020,523,139,9002),(1021,535,129,9003),(1022,735,99,9003),(1023,691,129,9003),(1024,681,99,9003);
+
+-- updated room, use the one below when updated
+/*
+INSERT INTO `room` (room_id, room_number, rate, hotel_id, booked) VALUES (1001,432,199,9001, 0),(1002,635,119,9001,0),(1003,639,129,9001,0),(1004,832,119,9001,0),(1005,519,99,9001,0),(1006,645,119,9001,0),(1014,923,299,9002,0),(1015,623,199,9002,0),(1016,532,99,9002,0),(1017,619,100,9002,0),(1018,719,149,9002,0),(1019,723,199,9002,0),(1020,523,139,9002,0),(1021,535,129,9003,0),(1022,735,99,9003,0),(1023,691,129,9003,0),(1024,681,99,9003,0);
+*/
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +167,6 @@ CREATE TABLE `USER` (
   `last_name` varchar(30) NOT NULL,
   `email` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
-  `bookings` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -174,7 +178,7 @@ CREATE TABLE `USER` (
 
 LOCK TABLES `USER` WRITE;
 /*!40000 ALTER TABLE `USER` DISABLE KEYS */;
-INSERT INTO `USER` VALUES (1,'jon','wong','jonwong@email','jonwongpassword','123'),(2,'Vera','Wong','verawong@email.com','verawongpassword',NULL),(3,'Steven','Louie','stevenlouie@email.com','stevenlouiepassword',NULL),(4,'Rachel','Green','centralperk@email.com','rachellovesgunther',NULL),(5,'Joey','Tribbiani','drakeramoray@dayofourlives.com','iloverachel',NULL),(6,'Chandler','Bing','chanandlerbong@email.com','matthewperry',NULL),(7,'Ross','Geller','fossils@nyu.edu','davidschwimmer',NULL),(8,'Phoebe','Buffay','pbuffay@massage.com','lisakudrow',NULL),(9,'Monica','Geller','mgeller@email.com','ihatesmoking',NULL);
+INSERT INTO `USER` VALUES (1,'jon','wong','jonwong@email','jonwongpassword'),(2,'Vera','Wong','verawong@email.com','verawongpassword'),(3,'Steven','Louie','stevenlouie@email.com','stevenlouiepassword'),(4,'Rachel','Green','centralperk@email.com','rachellovesgunther'),(5,'Joey','Tribbiani','drakeramoray@dayofourlives.com','iloverachel'),(6,'Chandler','Bing','chanandlerbong@email.com','matthewperry'),(7,'Ross','Geller','fossils@nyu.edu','davidschwimmer'),(8,'Phoebe','Buffay','pbuffay@massage.com','lisakudrow'),(9,'Monica','Geller','mgeller@email.com','ihatesmoking'),(10,'Administrator','Account','admin@hotel.com','eleanor';
 /*!40000 ALTER TABLE `USER` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
