@@ -305,22 +305,29 @@ public class HotelTest {
 							int hotelId = reader.nextInt();
 							System.out.print("Enter room id: ");
 							int roomId = reader.nextInt();
-							System.out.print("Enter new starting date: ");
-							int start_date = reader.nextInt();
-							System.out.print("Enter new end date: ");
-							int end_date = reader.nextInt();
 							
-							String sql = "UPDATE booking, user SET date_booking_start = ? and date_booking_end = ? WHERE booking.user_id = user.user_id and hotel_id = ? and room_id = ?";
-							pStmt = conn.prepareStatement(sql);
+							String sql = "SELECT * FROM booking where hotel_id ='" + hotelId + "'"  + "and room_id ='" + roomId + "'";
+							rs = stmt.executeQuery(sql);
 							
-							pStmt.setInt(1, start_date);
-							pStmt.setInt(2, end_date);
-							pStmt.setInt(3, hotelId);
-							pStmt.setInt(4, roomId);
-							pStmt.addBatch();
-							pStmt.executeBatch();
-							
-							System.out.println("Booking updated successfully..");
+							if (rs.next()) {
+								System.out.print("Enter new starting date: ");
+								int start_date = reader.nextInt();
+								System.out.print("Enter new end date: ");
+								int end_date = reader.nextInt();
+								
+								sql = "UPDATE booking, user SET date_booking_start = ? and date_booking_end = ? WHERE booking.user_id = user.user_id";
+								pStmt = conn.prepareStatement(sql);
+								
+								pStmt.setInt(1, start_date);
+								pStmt.setInt(2, end_date);
+								pStmt.addBatch();
+								pStmt.executeBatch();
+								
+								System.out.println("Booking updated successfully..");
+							}
+							else {
+								System.out.println("You don't have a reservation for this room..");
+							}
 							
 						} else if (input.equals("S") || input.equals("s")) {
 							//showAllReservations
