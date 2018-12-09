@@ -105,6 +105,11 @@ public class HotelTest {
 				System.out.println("Enter letter within a pair of brackets to select option");
 				input = reader.nextLine();
 				
+				String hotel_name = null;
+				String hotel_address = null;
+				String hotel_city = null;
+				String hotel_state = null;
+
 				while(!((input.equals("L")) || (input.equals("l")))) {
 					if (input.equals("H") || input.equals("h")) {
 						System.out.println("Select one of the following options: ");
@@ -113,9 +118,57 @@ public class HotelTest {
 						input = reader.nextLine();
 						
 						if (input.equals("C") || input.equals("c")) {
-							//createHotel
+							//createHotel	
+							System.out.print("Enter hotel id: ");
+							int hotelId = reader.nextInt();
+							System.out.print("Enter hotel name: ");
+							hotel_name = reader.nextLine();
+							System.out.print("Enter hotel address: ");
+							hotel_address = reader.nextLine();
+							System.out.print("Enter hotel city: ");
+							hotel_city = reader.nextLine();
+							System.out.print("Enter hotel state: ");
+							hotel_state = reader.nextLine();
+							System.out.print("Enter postal code: ");
+							int hotel_postal_code = reader.nextInt();
+							System.out.print("Enter hotel rating: ");
+							int hotel_rating = reader.nextInt();
+							
+							String sql = "SELECT * FROM HOTEL WHERE hotel_id ='" + hotelId + "'";
+							rs = stmt.executeQuery(sql);
+							
+							if (rs.next()) {
+								System.out.println("Hotel already exists..");
+							}
+							else {
+								sql = "INSERT INTO HOTEL (hotel_id, name, address, city, state, postal_code, rating) VALUES (?, ?, ?, ?, ?, ?, ?)";
+								pStmt = conn.prepareStatement(sql);
+								
+								pStmt.setInt(1, hotelId);
+								pStmt.setString(2, hotel_name);
+								pStmt.setString(3, hotel_address);
+								pStmt.setString(4, hotel_city);
+								pStmt.setString(5, hotel_state);
+								pStmt.setInt(6, hotel_postal_code);
+								pStmt.setInt(7, hotel_rating);
+								pStmt.addBatch();
+								pStmt.executeBatch();
+								
+								System.out.println("Hotel created successfully...");
+							}
+						
 						} else if (input.equals("S") || input.equals("s")) {
 							//getAllHotels
+							System.out.println("Here is a list of all hotels..");
+							String sql = "SELECT * FROM HOTEL ORDER BY hotel_id";
+							rs = stmt.executeQuery(sql);
+							
+							System.out.println("Hotel ID | Name | Address | City | State | Postal Code | Rating");
+							while (rs.next()) {
+								System.out.println(rs.getInt("hotel_id") + " | " + rs.getString("name") + " | " + rs.getString("address") + " | " + rs.getString("city") + " | " + rs.getString("state") + " | " + 
+										rs.getInt("postal_code") + " | " + rs.getInt("rating"));
+							}
+							
 						} else if (input.equals("B") || input.equals("b")) {
 							//getBestSellingHotel
 						} else if (input.equals("D") || input.equals("d")) {
@@ -131,6 +184,36 @@ public class HotelTest {
 							//getAllUsers
 						} else if (input.equals("C") || input.equals("c")) {
 							//createRoom
+							System.out.print("Enter room id: ");
+							int roomId = reader.nextInt();
+							System.out.print("Enter room number: ");
+							int roomNumber = reader.nextInt();
+							System.out.print("Enter room rating: ");
+							int roomRate = reader.nextInt();
+							System.out.print("Enter hotel id: ");
+							int hotel_id = reader.nextInt();
+							
+							String sql = "SELECT * FROM HOTEL WHERE hotel_id ='" + hotel_id + "'"; 
+							rs = stmt.executeQuery(sql);
+							
+							if (rs.next()) {
+								sql = "INSERT INTO room (room_id, room_number, rate, hotel_id, booked) VALUES (?, ?, ?, ?, ?)";
+								pStmt = conn.prepareStatement(sql);
+								
+								pStmt.setInt(1, roomId);
+								pStmt.setInt(2, roomNumber);
+								pStmt.setInt(3, roomRate);
+								pStmt.setInt(4, hotel_id);
+								pStmt.setInt(5, 0);
+								pStmt.addBatch();
+								pStmt.executeBatch();
+								
+								System.out.println("Room created successfully..");
+							}
+							else {
+								System.out.println("Hotel doesn't exist, room cannot be created..");
+							}
+							
 						} else if (input.equals("U") || input.equals("u")) {
 							//updateRoom
 						}
@@ -167,6 +250,7 @@ public class HotelTest {
 						System.out.println("Enter letter within a pair of brackets to select option");
 						input = reader.nextLine();
 						
+						
 						if (input.equals("M") || input.equals("m")) {
 							//bookRoom
 							System.out.print("Enter the room ID you want: ");
@@ -180,7 +264,21 @@ public class HotelTest {
 //							System.out.println(sql);
 						} else if (input.equals("H") || input.equals("h")) {
 							//searchHotel
+							System.out.print("Enter hotel id: ");
+							int hotelId = reader.nextInt();
 
+							String sql = "SELECT name, address, city, state, postal_code, rating FROM HOTEL WHERE hotel_id='" + hotelId + "'";
+							rs = stmt.executeQuery(sql);
+							
+							if (rs.next()) {
+								System.out.println("Name | Address | City | State | Postal Code | Rating");
+								System.out.println(rs.getString("name") + " | " + rs.getString("address") + " | " + rs.getString("city") + " | " +
+										rs.getString("state") + " | " + rs.getInt("postal_code") + " | " + rs.getInt("rating"));
+							}
+							else {
+								System.out.println("No such hotel..");
+							}
+							
 						} else if (input.equals("R") || input.equals("r")) {
 							//searchAvailableRooms
 							System.out.println("Here are all the rooms you can book:");
@@ -203,9 +301,32 @@ public class HotelTest {
 
 						} else if (input.equals("H") || input.equals("h")) {
 							//changeReservation
-
+							System.out.print("Enter new starting date: ");
+							int start_date = reader.nextInt();
+							System.out.print("Enter new end date: ");
+							int end_date = reader.nextInt();
+							
+							String sql = "UPDATE booking, user SET date_booking_start = ? and date_booking_end = ? WHERE booking.user_id = user.user_id";
+							pStmt = conn.prepareStatement(sql);
+							
+							pStmt.setInt(1, start_date);
+							pStmt.setInt(2, end_date);
+							pStmt.addBatch();
+							pStmt.executeBatch();
+							
+							System.out.println("Booking updated successfully..");
+							
 						} else if (input.equals("S") || input.equals("s")) {
 							//showAllReservations
+							System.out.println("Here are all your reservations..");
+							String sql = "SELECT * FROM user JOIN booking where user.user_id = booking.user_id";
+							rs = stmt.executeQuery(sql);
+							
+							System.out.println("First name | Last name | Booking ID | Booking start date | Booking end date");
+							while (rs.next()) {
+								System.out.println(rs.getString("first_name") + " | " + rs.getString("last_name") + " | " + rs.getInt("booking_id") +
+										" | " + rs.getDate("date_booking_start") + " | " + rs.getDate("date_booking_end"));
+							}
 							
 						} else if (input.equals("M") || input.equals("m")) {
 							//getMostVistitedCity
