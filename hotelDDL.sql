@@ -38,7 +38,7 @@ user_id INT NOT NULL auto_increment,
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL,
 email VARCHAR(30) NOT NULL UNIQUE,
-userPassword VARCHAR(30) NOT NULL,
+password VARCHAR(30) NOT NULL,
 PRIMARY KEY(user_id));
 
 DROP TABLE IF EXISTS BOOKING;
